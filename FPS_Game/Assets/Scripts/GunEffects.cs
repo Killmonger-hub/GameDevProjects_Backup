@@ -14,7 +14,7 @@ public class GunEffects : MonoBehaviour
 	public GameObject bulletPrefab;
 	public Transform bulletSpawn;
 
-	public float bulletSpeed = 30f;
+	public float bulletSpeed = 1f;
 	public float lifetime = 3f;
 	
 	// Update is called once per frame

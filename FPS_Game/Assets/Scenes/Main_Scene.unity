@@ -458,7 +458,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 644257459
+  randomSeed: -1333403654
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -5095,8 +5095,7 @@ MonoBehaviour:
   range: 100
   fpsCam: {fileID: 832528804}
   muzzleFlash: {fileID: 2144555080}
-  impactEffect: {fileID: 1859490423193940, guid: c47766a2e63976a4b80a62bb5a6194ce,
-    type: 2}
+  impactEffect: {fileID: 100002, guid: 56bfc2f4b4a0c534c8ef3d0fd1124c44, type: 2}
   bulletPrefab: {fileID: 1911998545805192, guid: 319144244e1ca1b468dafa5e97f3c266,
     type: 2}
   bulletSpawn: {fileID: 1771508070}
@@ -5641,7 +5640,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 2141780853
+  randomSeed: -646820983
   InitialModule:
     serializedVersion: 3
     enabled: 1
