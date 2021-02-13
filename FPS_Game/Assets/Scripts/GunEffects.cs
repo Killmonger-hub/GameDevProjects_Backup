@@ -14,8 +14,10 @@ public class GunEffects : MonoBehaviour
 	public GameObject bulletPrefab;
 	public Transform bulletSpawn;
 
-	public float bulletSpeed = 1f;
+	public float bulletSpeed = 30f;
 	public float lifetime = 3f;
+
+	public GameObject Crosshair;
 	
 	// Update is called once per frame
 	void Update () 
@@ -23,7 +25,6 @@ public class GunEffects : MonoBehaviour
 		if (Input.GetButtonDown("Fire1")) 
 		{
 			RayShoot ();
-			BulletShoot ();
 		}
 	}
 
@@ -34,27 +35,9 @@ public class GunEffects : MonoBehaviour
 		RaycastHit hit;
 		if (Physics.Raycast (fpsCam.transform.position, fpsCam.transform.forward, out hit, range)) 
 		{
-			Debug.Log (hit.transform.name);
-
 			GameObject impactGO = Instantiate (impactEffect, hit.point, Quaternion.LookRotation (hit.normal));
 			Destroy (impactGO, .5f);
 		}
-	}
-
-	private void BulletShoot()
-	{
-		GameObject bullet = Instantiate (bulletPrefab);
-		Physics.IgnoreCollision (bullet.GetComponent<Collider> (), bulletSpawn.parent.GetComponent<Collider> ());
-
-		bullet.transform.position = bulletSpawn.position;
-
-		Vector3 rotation = bullet.transform.rotation.eulerAngles;
-
-		bullet.transform.rotation = Quaternion.Euler (rotation.x, transform.eulerAngles.y, rotation.z);
-
-		bullet.GetComponent<Rigidbody> ().AddForce (bulletSpawn.forward * bulletSpeed, ForceMode.Impulse);
-
-		StartCoroutine (DestroyBulletAfterTime (bullet, lifetime));
 	}
 
 	private IEnumerator DestroyBulletAfterTime (GameObject bullet, float delay)
