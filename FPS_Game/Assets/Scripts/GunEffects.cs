@@ -9,15 +9,8 @@ public class GunEffects : MonoBehaviour
 
 	public Camera fpsCam;
 	public ParticleSystem muzzleFlash;
+
 	public GameObject impactEffect;
-
-	public GameObject bulletPrefab;
-	public Transform bulletSpawn;
-
-	public float bulletSpeed = 30f;
-	public float lifetime = 3f;
-
-	public GameObject Crosshair;
 	
 	// Update is called once per frame
 	void Update () 
