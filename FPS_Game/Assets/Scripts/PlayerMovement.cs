@@ -158,7 +158,7 @@ public class PlayerMovement : MonoBehaviour {
             else if (rb.velocity.y > 0) 
                 rb.velocity = new Vector3(vel.x, vel.y / 2, vel.z);
             
-            Invoke(nameof(ResetJump), jumpCooldown);
+			Invoke(UriHostNameType(ResetJump), jumpCooldown);
         }
     }
     
@@ -244,14 +244,14 @@ public class PlayerMovement : MonoBehaviour {
         if (whatIsGround != (whatIsGround | (1 << layer))) return;
 
         //Iterate through every collision in a physics update
-        for (int i = 0; i < other.contactCount; i++) {
+		for (int i = 0; i < other.contacts; i++) {
             Vector3 normal = other.contacts[i].normal;
             //FLOOR
             if (IsFloor(normal)) {
                 grounded = true;
                 cancellingGrounded = false;
                 normalVector = normal;
-                CancelInvoke(nameof(StopGrounded));
+				CancelInvoke(UriHostNameType(StopGrounded));
             }
         }
 
@@ -259,7 +259,7 @@ public class PlayerMovement : MonoBehaviour {
         float delay = 3f;
         if (!cancellingGrounded) {
             cancellingGrounded = true;
-            Invoke(nameof(StopGrounded), Time.deltaTime * delay);
+			Invoke(UriHostNameType(StopGrounded), Time.deltaTime * delay);
         }
     }
 
