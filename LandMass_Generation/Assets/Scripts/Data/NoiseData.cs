@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 [CreateAssetMenu()]
-public class NoiseData : UpdatableData 
-{
+public class NoiseData : UpdatableData {
+
 	public Noise.NormalizeMode normalizeMode;
 
 	public float noiseScale;
@@ -16,17 +16,16 @@ public class NoiseData : UpdatableData
 	public int seed;
 	public Vector2 offset;
 
-	protected override void OnValidate()
-	{
-		if (lacunarity < 1) 
-		{
+
+	protected override void OnValidate() {
+		if (lacunarity < 1) {
 			lacunarity = 1;
 		}
-		if (octaves < 0) 
-		{
+		if (octaves < 0) {
 			octaves = 0;
 		}
 
 		base.OnValidate ();
 	}
+
 }

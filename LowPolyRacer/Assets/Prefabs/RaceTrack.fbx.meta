@@ -1,15 +1,15 @@
 fileFormatVersion: 2
-guid: 4811bb0cae205a647a3fd421dc1fe2ec
+guid: 68d08ae6cc0e5f34dad7b329e0254919
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: Police Station
-    100002: Terrain
-    100004: //RootNode
+    100002: //RootNode
+    100004: Terrain
     100006: Track
     400000: Police Station
-    400002: Terrain
-    400004: //RootNode
+    400002: //RootNode
+    400004: Terrain
     400006: Track
     2100000: Material.003
     2100002: Material.004
