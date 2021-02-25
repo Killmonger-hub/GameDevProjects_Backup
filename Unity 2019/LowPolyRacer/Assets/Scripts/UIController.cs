@@ -11,10 +11,6 @@ public class UIController : MonoBehaviour
 	public Text UITextCurrentTime;
 	public Text UITextLastLapTime;
 	public Text UITextBestLapTime;
-	public Text UITextCurrentLapNo;
-	public Text UITextCurrentTimeNo;
-	public Text UITextLastLapNo;
-	public Text UITextBestLapNo;
 
 	public Player UpdateUIForPlayer;
 
@@ -22,44 +18,34 @@ public class UIController : MonoBehaviour
 	private float currentLapTime;
 	private float lastLapTime;
 	private float bestLapTime;
-	float startTime;
-
-	void Start()
-	{
-		startTime = Time.time;
-	}
 
 	void Update()
 	{
-		float time = Time.time - startTime;
-		string min = ((int)time / 60).ToString ();
-		string sec = (time % 60).ToString ("f2");
-
 		if (UpdateUIForPlayer == null) 
 			return;
 		
 		if(UpdateUIForPlayer.currentLap != currentLap)
 		{
 			currentLap = UpdateUIForPlayer.currentLap;
-			UITextCurrentLapNo.text = currentLap.ToString();
+			UITextCurrentLap.text = $"LAP: {currentLap}";
 		}
 
 		if(UpdateUIForPlayer.currentLapTime != currentLapTime)
 		{
 			currentLapTime = UpdateUIForPlayer.currentLapTime;
-			UITextCurrentTimeNo.text = min + ":" + sec;
+			UITextCurrentTime.text = $"Time: {(int)currentLapTime / 60}:{(currentLapTime) % 60:00.000}";
 		}
 
 		if(UpdateUIForPlayer.lastLapTime != lastLapTime)
 		{
 			lastLapTime = UpdateUIForPlayer.lastLapTime;
-			UITextLastLapNo.text = min + ":" + sec;
+			UITextLastLapTime.text = $"Last: {(int)lastLapTime / 60}:{(lastLapTime) % 60:00.000}";
 		}
 
 		if(UpdateUIForPlayer.bestLapTime != bestLapTime)
 		{
 			bestLapTime = UpdateUIForPlayer.bestLapTime;
-			UITextBestLapNo.text = min + ":" + sec;
+			UITextBestLapTime.text = bestLapTime < 1000000 ? $"Best: {(int)bestLapTime / 60} : {(bestLapTime) % 60:00.000}" : "Best: NONE ";
 		}
 	}
 }

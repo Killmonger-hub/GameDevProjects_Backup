@@ -22,10 +22,7 @@ public class Wheel : MonoBehaviour
 
 	void Update()
 	{
-		Vector3 pos;
-		Quaternion rot;
-
-		wheelCollider.GetWorldPose(out pos, out rot);
+		wheelCollider.GetWorldPose(out Vector3 pos, out Quaternion rot);
 		wheelTransform.position = pos;
 		wheelTransform.rotation = rot;
 	}

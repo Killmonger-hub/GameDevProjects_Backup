@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InputController : MonoBehaviour 
 {
@@ -14,5 +15,10 @@ public class InputController : MonoBehaviour
 	{
 		SteerInput = Input.GetAxis (inputSteerAxis);
 		ThrottleInput = Input.GetAxis (inputThrottleAxis);
+
+		if(Input.GetKeyDown(KeyCode.Escape))
+		{
+			SceneManager.LoadScene("Menu");
+		}
 	}
 }

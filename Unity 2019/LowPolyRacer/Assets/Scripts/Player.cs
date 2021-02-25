@@ -7,11 +7,10 @@ public class Player : MonoBehaviour
 	public enum ControlType {HumanInput, AI}
 	public ControlType controlType = ControlType.HumanInput;
 
-	public float bestLapTime = Mathf.Infinity;
-	public float lastLapTime = 0;
-
-	public float currentLapTime = 0;
-	public int currentLap = 0;
+	public float bestLapTime {get; private set;} = Mathf.Infinity;
+	public float lastLapTime {get; private set;} = 0;
+	public float currentLapTime {get; private set;} = 0;
+	public int currentLap {get; private set;} = 0;
 
 	private float lapTimerTimestamp;
 	private int lastCheckpointPassed = 0;
@@ -32,7 +31,6 @@ public class Player : MonoBehaviour
 
 	void StartLap()
 	{
-		Debug.Log ("Start Lap!");
 		currentLap++;
 		lastCheckpointPassed = 1;
 		lapTimerTimestamp = Time.time;
@@ -42,7 +40,6 @@ public class Player : MonoBehaviour
 	{
 		lastLapTime = Time.time - lapTimerTimestamp;
 		bestLapTime = Mathf.Min (lastLapTime, bestLapTime);
-		Debug.Log ("End Lap - Lap Time was " + lastLapTime + " seconds");
 	}
 
 	void OnTriggerEnter(Collider collider)
