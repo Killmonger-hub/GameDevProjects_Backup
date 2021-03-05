@@ -53,7 +53,7 @@ public class Tiling : MonoBehaviour
 	void MakeNewBuddy (int rightOrLeft)
     {
 		Vector3 newPosition = new Vector3 (myTransform.position.x + spriteWidth * rightOrLeft, myTransform.position.y, myTransform.position.z);
-		Transform newBuddy = Instantiate (myTransform, newPosition, myTransform.rotation) as Transform;
+		Transform newBuddy = (Transform)Instantiate (myTransform, newPosition, myTransform.rotation);
         
 		if (reverseScale == true)
         {
