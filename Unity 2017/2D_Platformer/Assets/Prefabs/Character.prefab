@@ -30,8 +30,9 @@ GameObject:
   - component: {fileID: 11400000}
   - component: {fileID: 6100000}
   - component: {fileID: 212673813433267226}
+  - component: {fileID: 114840693163573572}
   m_Layer: 8
-  m_Name: CharacterRobotBoy
+  m_Name: Character
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -361,7 +362,23 @@ MonoBehaviour:
     m_Bits: 4294967035
   bulletTrail: {fileID: 4493139119327560, guid: 37b5305d8839cf24c95a913e30320c23,
     type: 2}
+  muzzleFlash: {fileID: 4181023048392942, guid: 02706cde3a75e8e489e6a0a05bc9b0c6,
+    type: 2}
   effectSpawnRate: 10
+--- !u!114 &114840693163573572
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9caa3c4b6d4e0204abb7f4ca1352e5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats:
+    health: 100
+  fallBoundary: -9
 --- !u!212 &212673813433267226
 SpriteRenderer:
   m_ObjectHideFlags: 1
