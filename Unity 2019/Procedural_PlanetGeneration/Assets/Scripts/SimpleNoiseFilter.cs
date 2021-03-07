@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SimpleNoiseFilter : INoiseFilter
 {
+
     NoiseSettings.SimpleNoiseSettings settings;
     Noise noise = new Noise();
 
@@ -23,10 +24,10 @@ public class SimpleNoiseFilter : INoiseFilter
             float v = noise.Evaluate(point * frequency + settings.centre);
             noiseValue += (v + 1) * .5f * amplitude;
             frequency *= settings.roughness;
-            amplitude *= settings.persistance;
+            amplitude *= settings.persistence;
         }
 
-        noiseValue = Mathf.Max(0, noiseValue - settings.minValue);
+        noiseValue = noiseValue - settings.minValue;
         return noiseValue * settings.strength;
     }
 }
