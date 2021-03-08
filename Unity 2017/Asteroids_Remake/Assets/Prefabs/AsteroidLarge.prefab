@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1250434421323944}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.59, y: 4.77, z: 0}
+  m_LocalPosition: {x: 5, y: -5.21, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 0}
@@ -89,13 +89,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376a1d1219d49124eabf33ca0f4b09d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  asteroidMedium: {fileID: 1752519839780032, guid: 5507ae45d32adb94db3ce20cd07e07b5,
+    type: 2}
+  asteroidSmall: {fileID: 1610699080737846, guid: 62cec39d648b79c4bb9c5a3a65768554,
+    type: 2}
+  rb: {fileID: 50728500702200214}
   maxThrust: 1000
   maxTorque: 1000
-  rb: {fileID: 50728500702200214}
   screenTop: 12.4
   screenBottom: -12.4
   screenLeft: -15.9
   screenRight: 15.9
+  asteroidSize: 3
+  points: 0
 --- !u!212 &212584288328262960
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -4,14 +4,22 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
+    public GameObject explosion;
+    public GameObject player;
+    public GameObject asteroidMedium;
+    public GameObject asteroidSmall;
+    public Rigidbody2D rb;
+
     public float maxThrust;
     public float maxTorque;
-    public Rigidbody2D rb;
 
     public float screenTop;
     public float screenBottom;
     public float screenLeft;
     public float screenRight;
+
+    public int asteroidSize;
+    public int points;
 
     void Start()
     {
@@ -20,37 +28,55 @@ public class Asteroid : MonoBehaviour
 
         rb.AddForce(thrust);
         rb.AddTorque(torque);
-    }
 
+        player = GameObject.FindWithTag("Player");
+    }
     void Update()
     {
         Vector2 newPos = transform.position;
-
         if (transform.position.y > screenTop)
         {
             newPos.y = screenBottom;
         }
-
         if (transform.position.y < screenBottom)
         {
             newPos.y = screenTop;
         }
-
         if (transform.position.x > screenRight)
         {
             newPos.x = screenLeft;
         }
-
         if (transform.position.x < screenLeft)
         {
             newPos.x = screenRight;
         }
-
         transform.position = newPos;
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Destroy(other.gameObject);
+        if (other.CompareTag("Bullet"))
+        {
+            Destroy(other.gameObject);
+            if (asteroidSize == 3)
+            {
+                Instantiate(asteroidMedium, transform.position, transform.rotation);
+                Instantiate(asteroidMedium, transform.position, transform.rotation);
+            }
+            else if (asteroidSize == 2)
+            {
+                Instantiate(asteroidSmall, transform.position, transform.rotation);
+                Instantiate(asteroidSmall, transform.position, transform.rotation);
+            }
+            else if (asteroidSize == 1)
+            {
+                
+            }
+            player.SendMessage("ScorePoints", points);
+            GameObject newExplosion = Instantiate(explosion, transform.position, transform.rotation);
+            Destroy(newExplosion, 3f);
+
+            Destroy(gameObject);
+        }
     }
 }

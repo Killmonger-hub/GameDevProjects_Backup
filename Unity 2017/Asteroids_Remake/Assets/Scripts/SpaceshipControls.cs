@@ -1,28 +1,42 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpaceshipControls : MonoBehaviour
 {
-    public float rotSpeed = 180f;
+    public Transform firePoint;
+    public GameObject explode;
+    public GameObject bullet;
+    public AudioSource audio;
+
     public float bulletForce;
     public float deathForce;
-
-    public Transform firePoint;
-    public GameObject bullet;
-    public Rigidbody2D rb;
-    
-
     public float thrust;
     public float turnThrust;
-
-    private float thrustInput;
-    private float turnInput;
 
     public float screenTop;
     public float screenBottom;
     public float screenLeft;
     public float screenRight;
+
+    private float thrustInput;
+    private float turnInput;
+    public int score;
+    public int lives;
+
+    public Text scoreText;
+    public Text livesText;
+    public Color inColor;
+    public Color normalColor;
+
+    void Start()
+    {
+        score = 0;
+
+        scoreText.text = "Score: " + score;
+        livesText.text = "Lives: " + lives;
+    }
 
     void Update()
     {
@@ -63,16 +77,62 @@ public class SpaceshipControls : MonoBehaviour
     }
 
     void FixedUpdate()
-    { 
-        rb.AddForce(transform.up * thrustInput);
+    {
+        Vector3 pos = transform.position;
+        Vector3 velocity = new Vector3(0, thrustInput * thrust * Time.deltaTime, 0);
+        pos += transform.rotation * velocity;
+        transform.position = pos;
+    }
+
+    void ScorePoints(int pointsToAdd)
+    {
+        score += pointsToAdd;
+        scoreText.text = "Score: " + score;
+    }
+
+    void Respawn()
+    {
+        transform.position = Vector2.zero;
+
+        GetComponent<SpaceshipControls>().enabled = true;
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        sr.enabled = true;
+        sr.color = inColor;
+
+        Invoke("Invulnerable", 3f);
+        
+    }
+
+    void Invulnerable()
+    {
+        GetComponent<Collider2D>().enabled = true;
+        GetComponent<SpriteRenderer>().color = normalColor;
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
         Debug.Log(col.relativeVelocity.magnitude);
+       
         if(col.relativeVelocity.magnitude > deathForce)
         {
-            Debug.Log("u ded");
+            lives--;
+            GetComponent<SpaceshipControls>().enabled = false;
+            GetComponent<SpriteRenderer>().enabled = false;
+            GetComponent<Collider2D>().enabled = false;
+
+            GameObject newExplode = Instantiate(explode, transform.position, transform.rotation);
+            Destroy(newExplode, 3f);
+            Invoke("Respawn", 3f);
+
+            livesText.text = "Lives: " + lives;
+            if(lives <= 0)
+            {
+                
+            }
+        }
+        else
+        {
+            audio.Play();
         }
     }
 }
