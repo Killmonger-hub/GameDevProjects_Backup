@@ -5,10 +5,11 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     public float fireRate = 0;
-    public float damage = 10;
+    public int damage = 10;
     public LayerMask whatToHit;
 
     public Transform bulletTrail;
+    public Transform hitEffect;
     public Transform muzzleFlash;
 
     float timeToSpawnEffect = 0;
@@ -51,23 +52,57 @@ public class Weapon : MonoBehaviour
         Vector2 firePointPos = new Vector2(firePoint.position.x, firePoint.position.y);
         RaycastHit2D hit = Physics2D.Raycast(firePointPos, mousePos - firePointPos, 100, whatToHit);
 
-        if(Time.time>=timeToSpawnEffect)
-        {
-            Effect();
-            timeToSpawnEffect = Time.time + 1 / effectSpawnRate;
-        }
-
         Debug.DrawLine(firePointPos, (mousePos - firePointPos) * 100, Color.cyan);
         if(hit.collider != null)
         {
             Debug.DrawLine(firePointPos, hit.point, Color.red);
-            Debug.Log("We hit " + hit.collider.name + " and did " + damage + " damage.");
+            Enemy enemy = hit.collider.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.DamageEnemy(damage);
+                Debug.Log("We hit " + hit.collider.name + " and did " + damage + " damage.");
+            }
+        }
+
+        if (Time.time >= timeToSpawnEffect)
+        {
+            Vector3 hitPos;
+            Vector3 hitNormal;
+
+            if (hit.collider == null)
+            {
+                hitPos = (mousePos - firePointPos) * 30;
+                hitNormal = new Vector3(9999, 9999, 9999);
+            }
+            else
+            {
+                hitPos = hit.point;
+                hitNormal = hit.normal;
+            }
+            Effect(hitPos, hitNormal);
+            timeToSpawnEffect = Time.time + 1 / effectSpawnRate;
         }
     }
 
-    void Effect()
+    void Effect(Vector3 hitPos, Vector3 hitNormal)
     {
-        Instantiate(bulletTrail, firePoint.position, firePoint.rotation);
+        Transform trail = (Transform)Instantiate(bulletTrail, firePoint.position, firePoint.rotation);
+        LineRenderer lr = trail.GetComponent<LineRenderer>();
+
+        if (lr != null)
+        {
+            lr.SetPosition(0, firePoint.position);
+            lr.SetPosition(1, hitPos);
+        }
+
+        Destroy(trail.gameObject, 0.04f);
+
+        if (hitNormal != new Vector3(9999, 9999, 9999))
+        {
+            Transform hitParticles = (Transform)Instantiate(hitEffect, hitPos, Quaternion.FromToRotation(Vector3.right, hitNormal));
+            Destroy(hitParticles.gameObject, 1f);
+        }
+
         Transform clone = (Transform)Instantiate(muzzleFlash, firePoint.position, firePoint.rotation);
         clone.parent = firePoint;
         float size = Random.Range(0.6f, 0.9f);

@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
-    public GameObject explosion;
+    public GameManager gm;
     public GameObject player;
+
+    public GameObject explosion;
     public GameObject asteroidMedium;
     public GameObject asteroidSmall;
     public Rigidbody2D rb;
@@ -21,6 +23,7 @@ public class Asteroid : MonoBehaviour
     public int asteroidSize;
     public int points;
 
+
     void Start()
     {
         Vector2 thrust = new Vector2(Random.Range(-maxThrust, maxThrust), Random.Range(-maxThrust, maxThrust));
@@ -30,6 +33,7 @@ public class Asteroid : MonoBehaviour
         rb.AddTorque(torque);
 
         player = GameObject.FindWithTag("Player");
+        gm = GameObject.FindObjectOfType<GameManager>();
     }
     void Update()
     {
@@ -62,17 +66,22 @@ public class Asteroid : MonoBehaviour
             {
                 Instantiate(asteroidMedium, transform.position, transform.rotation);
                 Instantiate(asteroidMedium, transform.position, transform.rotation);
+
+                gm.UpdateNumOfAsteroids(1);
             }
             else if (asteroidSize == 2)
             {
                 Instantiate(asteroidSmall, transform.position, transform.rotation);
                 Instantiate(asteroidSmall, transform.position, transform.rotation);
+
+                gm.UpdateNumOfAsteroids(1);
             }
             else if (asteroidSize == 1)
             {
-                
+                gm.UpdateNumOfAsteroids(-1);
             }
             player.SendMessage("ScorePoints", points);
+
             GameObject newExplosion = Instantiate(explosion, transform.position, transform.rotation);
             Destroy(newExplosion, 3f);
 

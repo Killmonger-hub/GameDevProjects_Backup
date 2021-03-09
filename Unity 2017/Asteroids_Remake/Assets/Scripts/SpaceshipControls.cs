@@ -2,18 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class SpaceshipControls : MonoBehaviour
 {
-    public Transform firePoint;
+    public Text scoreText;
+    public Text livesText;
+
+    public GameObject gameOverPanel;
     public GameObject explode;
     public GameObject bullet;
-    public AudioSource audio;
+    public Transform firePoint;
+
+    public SpriteRenderer spriteRenderer;
+    public Collider2D collider;
+    public AudioSource explodeAudio;
+    public AudioSource hyperspaceAudio;
+    public AudioSource respawnAudio;
+    public Rigidbody2D rb;
 
     public float bulletForce;
     public float deathForce;
     public float thrust;
     public float turnThrust;
+    public float thrustVel;
 
     public float screenTop;
     public float screenBottom;
@@ -22,18 +34,17 @@ public class SpaceshipControls : MonoBehaviour
 
     private float thrustInput;
     private float turnInput;
+    private bool hyperspace;
     public int score;
     public int lives;
 
-    public Text scoreText;
-    public Text livesText;
     public Color inColor;
     public Color normalColor;
 
     void Start()
     {
         score = 0;
-
+        hyperspace = false;
         scoreText.text = "Score: " + score;
         livesText.text = "Lives: " + lives;
     }
@@ -49,6 +60,15 @@ public class SpaceshipControls : MonoBehaviour
             newBullet.GetComponent<Rigidbody2D>().AddRelativeForce(Vector2.up * bulletForce);
 
             Destroy(newBullet, 3f);
+        }
+
+        if (Input.GetButtonDown("Hyperspace") && !hyperspace)
+        {
+            hyperspaceAudio.Play();
+            hyperspace = true;
+            spriteRenderer.enabled = false;
+            collider.enabled = false;
+            Invoke("Hyperspace", 1f);
         }
 
         transform.Rotate(Vector3.forward * turnInput * Time.deltaTime * -turnThrust);
@@ -82,6 +102,7 @@ public class SpaceshipControls : MonoBehaviour
         Vector3 velocity = new Vector3(0, thrustInput * thrust * Time.deltaTime, 0);
         pos += transform.rotation * velocity;
         transform.position = pos;
+        rb.AddRelativeForce(Vector2.up * thrustVel);
     }
 
     void ScorePoints(int pointsToAdd)
@@ -92,12 +113,12 @@ public class SpaceshipControls : MonoBehaviour
 
     void Respawn()
     {
+        respawnAudio.Play();
         transform.position = Vector2.zero;
 
-        GetComponent<SpaceshipControls>().enabled = true;
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        sr.enabled = true;
-        sr.color = inColor;
+        spriteRenderer.enabled = true;
+        spriteRenderer.enabled = true;
+        spriteRenderer.color = inColor;
 
         Invoke("Invulnerable", 3f);
         
@@ -105,8 +126,36 @@ public class SpaceshipControls : MonoBehaviour
 
     void Invulnerable()
     {
-        GetComponent<Collider2D>().enabled = true;
-        GetComponent<SpriteRenderer>().color = normalColor;
+        collider.enabled = true;
+        spriteRenderer.color = normalColor;
+    }
+
+    void Hyperspace()
+    {
+        Vector2 newPos = new Vector2(Random.Range(-12.16f, 12.16f), Random.Range(-8.35f, 8.35f));
+        transform.position = newPos;
+
+        spriteRenderer.enabled = true;
+        collider.enabled = true;
+        hyperspace = false;
+    }
+
+    void LoseLife()
+    {
+        lives--;
+
+        spriteRenderer.enabled = false;
+        collider.enabled = false;
+
+        GameObject newExplode = Instantiate(explode, transform.position, transform.rotation);
+        Destroy(newExplode, 3f);
+        Invoke("Respawn", 3f);
+
+        livesText.text = "Lives: " + lives;
+        if (lives <= 0)
+        {
+            GameOver();
+        }
     }
 
     void OnCollisionEnter2D(Collision2D col)
@@ -115,24 +164,30 @@ public class SpaceshipControls : MonoBehaviour
        
         if(col.relativeVelocity.magnitude > deathForce)
         {
-            lives--;
-            GetComponent<SpaceshipControls>().enabled = false;
-            GetComponent<SpriteRenderer>().enabled = false;
-            GetComponent<Collider2D>().enabled = false;
-
-            GameObject newExplode = Instantiate(explode, transform.position, transform.rotation);
-            Destroy(newExplode, 3f);
-            Invoke("Respawn", 3f);
-
-            livesText.text = "Lives: " + lives;
-            if(lives <= 0)
-            {
-                
-            }
+            LoseLife();
         }
         else
         {
-            audio.Play();
+            explodeAudio.Play();
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Beam"))
+        {
+            LoseLife();
+        }      
+    }
+
+    void GameOver()
+    {
+        CancelInvoke();
+        gameOverPanel.SetActive(true);
+    }
+
+    public void PlayAgain()
+    {
+        SceneManager.LoadScene("Main");
     }
 }
