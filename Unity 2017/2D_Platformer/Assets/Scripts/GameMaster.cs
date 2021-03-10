@@ -11,20 +11,17 @@ public class GameMaster : MonoBehaviour
     public Transform spawnPoint;
     public Transform spawnPrefab;
 
-    public AudioSource spawnSound;
-
-    void Start()
+    void Awake()
     {
         if(gm == null)
         {
             gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
         }
-        spawnSound = GetComponent<AudioSource>();
     }
 
     public IEnumerator RespawnPlayer()
     {
-        spawnSound.Play();
+        GetComponent<AudioSource>().Play();
         yield return new WaitForSeconds(spawnDelay);
 
         Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);

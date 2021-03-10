@@ -6,9 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class SpaceshipControls : MonoBehaviour
 {
+    public GameManager gm;
+    public GameObject newHighScorePanel;
+    public Text highScoreListText;
     public Text scoreText;
     public Text livesText;
 
+    public Alien alien;
     public GameObject gameOverPanel;
     public GameObject explode;
     public GameObject bullet;
@@ -32,6 +36,7 @@ public class SpaceshipControls : MonoBehaviour
     public float screenLeft;
     public float screenRight;
 
+    public InputField highScoreInput;
     private float thrustInput;
     private float turnInput;
     private bool hyperspace;
@@ -53,6 +58,11 @@ public class SpaceshipControls : MonoBehaviour
     {
         thrustInput = Input.GetAxis("Vertical");
         turnInput = Input.GetAxis("Horizontal");
+
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("Start Menu");
+        }
 
         if (Input.GetButtonDown("Fire1"))
         {
@@ -121,7 +131,6 @@ public class SpaceshipControls : MonoBehaviour
         spriteRenderer.color = inColor;
 
         Invoke("Invulnerable", 3f);
-        
     }
 
     void Invulnerable()
@@ -182,12 +191,40 @@ public class SpaceshipControls : MonoBehaviour
 
     void GameOver()
     {
+        GetComponent<SpaceshipControls>().enabled = false;
         CancelInvoke();
+
+        if (gm.CheckForHighScore(score))
+        {
+            newHighScorePanel.SetActive(true);
+        }
+        else
+        {
+            gameOverPanel.SetActive(true);
+            highScoreListText.text = "HIGH SCORE" + "\n" + "1. " + PlayerPrefs.GetString("HighScoreName") + " - " + PlayerPrefs.GetInt("HighScore");
+        }
+    }
+
+    public void HighScoreInput()
+    {
+        string newInput = highScoreInput.text;
+        Debug.Log(newInput);
+
+        newHighScorePanel.SetActive(false);
         gameOverPanel.SetActive(true);
+
+        PlayerPrefs.SetString("HighScoreName", newInput);
+        PlayerPrefs.SetInt("HighScore", score);
+        highScoreListText.text = "HIGH SCORE" + "\n" + "1. " + PlayerPrefs.GetString("HighScoreName") + " - " + PlayerPrefs.GetInt("HighScore");
     }
 
     public void PlayAgain()
     {
         SceneManager.LoadScene("Main");
+    }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene("Start Menu");
     }
 }

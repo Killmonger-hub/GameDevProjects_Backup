@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c62aab8266fca428ab102279760c55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 60
+  fireRate: 0
   damage: 10
   whatToHit:
     serializedVersion: 2
@@ -366,6 +366,7 @@ MonoBehaviour:
   muzzleFlash: {fileID: 4181023048392942, guid: 02706cde3a75e8e489e6a0a05bc9b0c6,
     type: 2}
   effectSpawnRate: 10
+  camShakeAmt: 0.1
 --- !u!114 &114840693163573572
 MonoBehaviour:
   m_ObjectHideFlags: 1

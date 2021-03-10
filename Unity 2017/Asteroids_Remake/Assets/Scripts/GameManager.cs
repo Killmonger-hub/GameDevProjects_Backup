@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Current num of asteroids in scene
     public int numOfAsteroids;
     public int levelNum = 1;
+
     public GameObject asteroid;
+    public Alien alien;
 
     public void UpdateNumOfAsteroids(int change)
     {
@@ -28,5 +29,16 @@ public class GameManager : MonoBehaviour
             Instantiate(asteroid, spawnPos, Quaternion.identity);
             numOfAsteroids++;
         }
+        alien.NewLevel();
+    }
+
+    public bool CheckForHighScore(int score)
+    {
+        int highScore = PlayerPrefs.GetInt("HighScore");
+        if (score > highScore)
+        {
+            return true;
+        }
+        return false;
     }
 }

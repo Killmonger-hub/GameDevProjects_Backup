@@ -89,8 +89,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 376a1d1219d49124eabf33ca0f4b09d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosion: {fileID: 1000011128802252, guid: 96730f8640590934eacb6f860058e7f9, type: 2}
+  gm: {fileID: 0}
   player: {fileID: 0}
+  explosion: {fileID: 1000011128802252, guid: 96730f8640590934eacb6f860058e7f9, type: 2}
   asteroidMedium: {fileID: 1752519839780032, guid: 5507ae45d32adb94db3ce20cd07e07b5,
     type: 2}
   asteroidSmall: {fileID: 1610699080737846}
